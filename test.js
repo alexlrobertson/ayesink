@@ -12,9 +12,7 @@ describe('async', () => {
 
       // returns a thunk
       async.sequence([fun1, fun2])((err, data) => {
-        if (err) {
-          throw new Error();
-        }
+        assert.ifError(err);
         assert.equal(data, 'testing');
         done();
       });
@@ -26,10 +24,7 @@ describe('async', () => {
 
       // returns a thunk
       async.sequence([fun1, fun2])((err, data) => {
-        if (err) {
-          throw new Error();
-        }
-
+        assert.ifError(err);
         assert.equal(data, 'test1');
         done();
       });
@@ -44,35 +39,52 @@ describe('async', () => {
 
       setTimeout(() =>
         setter((err, data) => {
-          if (err) {
-            throw new Error();
-          }
+          assert.ifError(err);
           assert.equal(data, 'TEST2');
           done();
         })
       , 100);
     });
+
+    it('throws if callback is not a function', done => {
+      assert.throws(() => async.sequence()(), TypeError);
+
+      done();
+    });
   });
 
-  describe('has a parallel method that', () =>
+  describe('has a parallel method that', () => {
     it('runs functions in parallel', done => {
       function fun1(cb) {
         setTimeout(cb.bind(null, null, 'test'), 10);
       }
+
       function fun2(cb) {
         setTimeout(cb.bind(null, null, 'ing'), 10);
       }
 
       // returns a thunk
       async.parallel([fun1, fun2])((err, data) => {
-        if (err) {
-          throw new Error();
-        }
+        assert.ifError(err);
         assert.deepEqual(data, ['test', 'ing']);
         done();
       });
-    })
-  );
+    });
+
+    it('handles error', done => {
+      async.parallel([(callback) => callback('errored out')])((err) => {
+        assert.equal(err, 'errored out');
+
+        done();
+      });
+    });
+
+    it('throws if callback is not a function', done => {
+      assert.throws(() => async.parallel()(), TypeError);
+
+      done();
+    });
+  });
 
   describe('has a race method that', () =>
     it('uses the first completing function', done => {
@@ -85,15 +97,11 @@ describe('async', () => {
 
       // returns a thunk
       async.race([fun1(10), fun2(20)])((err, data) => {
-        if (err) {
-          throw new Error();
-        }
+        assert.ifError(err);
 
         assert.equal(data, 'test');
         async.race([fun1(20), fun2(10)])((err2, data2) => {
-          if (err2) {
-            throw new Error();
-          }
+          assert.ifError(err2);
 
           assert.equal(data2, 'ing');
           done();
