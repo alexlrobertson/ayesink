@@ -1,5 +1,7 @@
 # AyeSink
 
+[![Build Status](https://travis-ci.org/alexlrobertson/ayesink.svg?branch=master)](https://travis-ci.org/alexlrobertson/ayesink)
+
 `npm install ayesink`
 
 ## `sequence`
