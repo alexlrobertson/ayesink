@@ -32,7 +32,7 @@ ayesink.sequence([userThunk, upperCaseName])((err, data) => {
 const userThunk1 = getUser(1);
 const userThunk2 = getUser(2);
 
-async.parallel([userThunk1, userThunk2])((err, users) => {
+ayesink.parallel([userThunk1, userThunk2])((err, users) => {
   console.log(users); // [ { userId: 1, name: 'Joe' }, { userId: 2, name: 'Joe' } ]
 });
 ```
@@ -44,7 +44,7 @@ function faster (cb) {
   setTimeout(cb.bind(null, null, "I'm faster"), 10);
 }
 
-async.race([userThunk1, faster])((err, winner) => {
+ayesink.race([userThunk1, faster])((err, winner) => {
   console.log(winner); // I'm faster
 });
 ```
