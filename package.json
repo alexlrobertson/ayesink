@@ -1,6 +1,6 @@
 {
   "name": "ayesink",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Async ECMAScript Utils",
   "main": "index.js",
   "scripts": {
