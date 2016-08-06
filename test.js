@@ -10,6 +10,9 @@ describe('async', () => {
 
       // returns a thunk
       async.sequence([fun1, fun2])((err, data) => {
+        if (err) {
+          throw new Error();
+        }
         assert.equal(data, 'testing');
         done();
       });
@@ -21,6 +24,10 @@ describe('async', () => {
 
       // returns a thunk
       async.sequence([fun1, fun2])((err, data) => {
+        if (err) {
+          throw new Error();
+        }
+
         assert.equal(data, 'test1');
         done();
       });
@@ -35,6 +42,9 @@ describe('async', () => {
 
       setTimeout(() =>
         setter((err, data) => {
+          if (err) {
+            throw new Error();
+          }
           assert.equal(data, 'TEST2');
           done();
         })
@@ -53,6 +63,9 @@ describe('async', () => {
 
       // returns a thunk
       async.parallel([fun1, fun2])((err, data) => {
+        if (err) {
+          throw new Error();
+        }
         assert.deepEqual(data, ['test', 'ing']);
         done();
       });
@@ -70,9 +83,17 @@ describe('async', () => {
 
       // returns a thunk
       async.race([fun1(10), fun2(20)])((err, data) => {
+        if (err) {
+          throw new Error();
+        }
+
         assert.equal(data, 'test');
-        async.race([fun1(20), fun2(10)])((err, data) => {
-          assert.equal(data, 'ing');
+        async.race([fun1(20), fun2(10)])((err2, data2) => {
+          if (err2) {
+            throw new Error();
+          }
+
+          assert.equal(data2, 'ing');
           done();
         });
       });
